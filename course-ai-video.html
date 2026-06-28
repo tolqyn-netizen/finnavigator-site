@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Создатель видео на основе ИИ — Курс | Цифровые Профессии</title>
+<meta name="description" content="Создавай Reels, Shorts и рекламные ролики с помощью ИИ. Krea, VEO3, HeyGen, CapCut. 7 модулей, портфолио, фриланс.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --teal: #2ec4a0; --teal-bg: rgba(46,196,160,0.12);
+    --coral: #f07060;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--font-h); font-size: 16px; font-weight: 700; }
+  .nav-logo span { color: var(--teal); }
+  .nav-cta { background: var(--teal); color: #0d1117; font-size: 14px; font-weight: 600; padding: 8px 20px; border-radius: var(--r-sm); transition: opacity .2s; }
+  .nav-cta:hover { opacity: .85; }
+
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+  .hero { padding: 72px 24px 56px; max-width: 820px; margin: 0 auto; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--teal-bg); color: var(--teal); font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 100px; border: 1px solid rgba(46,196,160,0.25); margin-bottom: 24px; letter-spacing: .04em; text-transform: uppercase; }
+  .hero h1 { font-family: var(--font-h); font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; color: var(--teal); }
+  .hero-lead { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 640px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+  .pill { font-size: 13px; color: var(--muted); background: var(--card); border: 1px solid var(--border); padding: 5px 14px; border-radius: 100px; }
+  .pill strong { color: var(--text); }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-main { background: var(--teal); color: #0d1117; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: var(--r-sm); transition: opacity .2s, transform .15s; display: inline-block; }
+  .btn-main:hover { opacity: .88; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); font-size: 15px; font-weight: 500; padding: 14px 32px; border-radius: var(--r-sm); border: 1px solid var(--border-h); transition: border-color .2s; display: inline-block; }
+  .btn-outline:hover { border-color: var(--text); }
+
+  .pain-section { background: var(--surface); padding: 64px 24px; }
+  .section-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+  .section-title { font-family: var(--font-h); font-size: clamp(24px, 3.5vw, 36px); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 32px; }
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .pain-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; }
+  .pain-emoji { font-size: 24px; margin-bottom: 12px; }
+  .pain-text { font-size: 15px; color: var(--muted); line-height: 1.6; }
+  .pain-text strong { color: var(--text); }
+
+  .result-section { padding: 64px 24px; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 32px; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: var(--r); padding: 20px 24px; }
+  .result-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .result-card p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+  .modules-section { background: var(--surface); padding: 64px 24px; }
+  .modules-list { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+  .module-item { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .module-head { padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer; transition: background .15s; }
+  .module-head:hover { background: rgba(255,255,255,0.02); }
+  .module-num { font-family: var(--font-h); font-size: 13px; font-weight: 700; color: var(--teal); opacity: .7; min-width: 28px; margin-top: 2px; }
+  .module-info { flex: 1; }
+  .module-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .module-sub { font-size: 13px; color: var(--muted); }
+  .module-arrow { color: var(--muted); font-size: 18px; transition: transform .2s; flex-shrink: 0; margin-top: 2px; }
+  .module-item.open .module-arrow { transform: rotate(90deg); }
+  .module-body { display: none; padding: 0 24px 20px 68px; }
+  .module-item.open .module-body { display: block; }
+  .module-body p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+  .module-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .module-tag { font-size: 12px; background: var(--teal-bg); color: var(--teal); padding: 3px 10px; border-radius: 100px; }
+
+  .tools-section { padding: 64px 24px; }
+  .tools-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .tool-pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 8px 18px; font-size: 14px; color: var(--muted); transition: border-color .2s, color .2s; }
+  .tool-pill:hover { border-color: var(--teal); color: var(--text); }
+
+  .forwho-section { background: var(--surface); padding: 64px 24px; }
+  .forwho-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 32px; }
+  .forwho-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+  .forwho-icon { font-size: 28px; margin-bottom: 10px; }
+  .forwho-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .forwho-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .cta-section { padding: 80px 24px; text-align: center; }
+  .cta-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 56px 40px; max-width: 640px; margin: 0 auto; position: relative; overflow: hidden; }
+  .cta-box::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; background: radial-gradient(circle, rgba(46,196,160,0.1) 0%, transparent 70%); pointer-events: none; }
+  .cta-box h2 { font-family: var(--font-h); font-size: clamp(24px, 4vw, 36px); font-weight: 700; margin-bottom: 16px; }
+  .cta-box p { font-size: 16px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+  .cta-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+  .cta-feat { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .cta-feat::before { content: '✓'; color: var(--teal); font-size: 12px; }
+
+  footer { border-top: 1px solid var(--border); padding: 32px 24px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; }
+  .footer-logo span { color: var(--teal); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 14px; color: var(--muted); transition: color .2s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 13px; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .pain-section, .result-section, .modules-section, .tools-section, .forwho-section, .cta-section { padding: 48px 16px; }
+    .module-body { padding-left: 44px; }
+    .cta-box { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <a href="#enroll" class="nav-cta">Записаться на курс</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Курс · Хит</div>
+  <h1>Создавай <em>вирусные видео с ИИ</em> — и зарабатывай на контенте</h1>
+  <p class="hero-lead">Reels, Shorts, рекламные ролики с AI-аватарами и автосубтитрами. От идеи до публикации — без съёмочной группы, студии и дорогого оборудования.</p>
+  <div class="hero-pills">
+    <span class="pill">🎬 <strong>Krea · VEO3</strong></span>
+    <span class="pill">🤖 <strong>HeyGen</strong></span>
+    <span class="pill">✂️ <strong>CapCut</strong></span>
+    <span class="pill">🎙 <strong>Pictory.ai</strong></span>
+    <span class="pill">⚡ <strong>7 модулей</strong></span>
+    <span class="pill">📱 <strong>Короткий формат</strong></span>
+  </div>
+  <div class="hero-actions">
+    <a href="#enroll" class="btn-main">Записаться на курс</a>
+    <a href="#modules" class="btn-outline">Смотреть программу</a>
+  </div>
+</div>
+
+<!-- PAIN -->
+<div class="pain-section">
+  <div class="wrap">
+    <div class="section-label">Это про тебя?</div>
+    <h2 class="section-title">Почему большинство так и не начинают снимать</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-emoji">📷</div>
+        <div class="pain-text"><strong>«Нет камеры и оборудования»</strong> — AI-видео генерируется из текста или изображений. Камера, студия и актёры больше не обязательны.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">😰</div>
+        <div class="pain-text"><strong>«Не хочу светить лицом»</strong> — AI-аватары в HeyGen говорят вместо тебя. Твой голос, твой скрипт — чужое лицо.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">🎞</div>
+        <div class="pain-text"><strong>«Монтаж — это сложно»</strong> — CapCut с AI-функциями делает автосубтитры, убирает фон и улучшает звук в один клик. Базовый монтаж освоишь за один модуль.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">💡</div>
+        <div class="pain-text"><strong>«Не знаю о чём снимать»</strong> — разбираем структуру вирусного видео, хук, сторителлинг и как адаптировать тренды под любую нишу.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="result-section">
+  <div class="wrap">
+    <div class="section-label">После курса</div>
+    <h2 class="section-title">Что ты умеешь и имеешь на выходе</h2>
+    <div class="result-grid">
+      <div class="result-card">
+        <h4>Генерируешь видео из текста</h4>
+        <p>Krea и VEO3 превращают описание в кинематографичную сцену за минуты</p>
+      </div>
+      <div class="result-card">
+        <h4>Создаёшь AI-аватаров</h4>
+        <p>HeyGen — говорящий аватар с любым голосом и внешностью для презентаций и рекламы</p>
+      </div>
+      <div class="result-card">
+        <h4>Монтируешь в CapCut</h4>
+        <p>Нарезаешь клипы, добавляешь субтитры, переходы и музыку — быстро и без опыта</p>
+      </div>
+      <div class="result-card">
+        <h4>Пишешь цепляющие сценарии</h4>
+        <p>Структура хук → развитие → CTA, которая работает в Reels, Shorts и TikTok</p>
+      </div>
+      <div class="result-card">
+        <h4>Следишь за трендами</h4>
+        <p>Знаешь где смотреть что актуально и как адаптировать под свою нишу</p>
+      </div>
+      <div class="result-card">
+        <h4>Готов к фрилансу</h4>
+        <p>Понимаешь как оценивать видеопроекты и где искать заказы на контент</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULES -->
+<div class="modules-section" id="modules">
+  <div class="wrap">
+    <div class="section-label">Программа курса</div>
+    <h2 class="section-title">7 модулей — от первой сцены до готового ролика и первого заказа</h2>
+    <div class="modules-list">
+
+      <div class="module-item open">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">01</div>
+          <div class="module-info">
+            <div class="module-title">Введение в профессию создателя видео на ИИ</div>
+            <div class="module-sub">Кто это, какие задачи решает и почему сейчас лучшее время войти</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Разбираемся кто такой AI-видеокреатор и чем он отличается от обычного монтажёра. Смотрим на реальные задачи: Reels для бизнеса, рекламные ролики, обучающие видео, AI-аватары для корпораций. Видеоконтент растёт быстрее любого другого формата — и бизнесу нужны люди, которые умеют делать его быстро и дёшево. Изучаем карту навыков и понимаем что нужно для старта.</p>
+          <div class="module-tags">
+            <span class="module-tag">Типы видеопроектов</span>
+            <span class="module-tag">Карта навыков</span>
+            <span class="module-tag">Рынок и доходы</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">02</div>
+          <div class="module-info">
+            <div class="module-title">Инструменты AI для генерации видео</div>
+            <div class="module-sub">Krea, VEO3, Pictory.ai, HeyGen — что делает каждый и когда использовать</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Разбираем четыре главные платформы. Krea и VEO3 — генерация кинематографичного видео из текстового описания или изображения: выбираем движение камеры, атмосферу, стиль. Pictory.ai — превращает статью или скрипт в готовое видео со стоковыми клипами и субтитрами за минуты. HeyGen — создаём говорящего AI-аватара: загружаем скрипт, выбираем внешность и голос, получаем готовое видео. Учимся комбинировать инструменты в одном проекте.</p>
+          <div class="module-tags">
+            <span class="module-tag">Krea</span>
+            <span class="module-tag">VEO3</span>
+            <span class="module-tag">Pictory.ai</span>
+            <span class="module-tag">HeyGen</span>
+            <span class="module-tag">Gemini Video</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">03</div>
+          <div class="module-info">
+            <div class="module-title">Основы видеомонтажа и работа в CapCut</div>
+            <div class="module-sub">Нарезаем клипы, добавляем субтитры и собираем готовый ролик</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>CapCut — самый популярный редактор для короткого формата, и у него мощные AI-функции. Учимся работать с таймлайном: импортируем файлы, нарезаем и склеиваем клипы, добавляем переходы и текст. Осваиваем AI-функции: автоматические субтитры в один клик, удаление фона без хромакея, улучшение звука и шумоподавление. Работаем с шаблонами для быстрого создания роликов. К концу модуля собираешь первый готовый ролик из разных источников.</p>
+          <div class="module-tags">
+            <span class="module-tag">CapCut</span>
+            <span class="module-tag">Монтаж</span>
+            <span class="module-tag">Автосубтитры</span>
+            <span class="module-tag">Удаление фона</span>
+            <span class="module-tag">Портфолио-задания</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">04</div>
+          <div class="module-info">
+            <div class="module-title">Промпт-инжиниринг, структура видео и сторителлинг</div>
+            <div class="module-sub">Как написать сценарий который цепляет с первой секунды</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Хороший AI-видеокреатор — это прежде всего хороший сценарист. Разбираем промпты для видеогенераторов: как описать движение камеры, атмосферу, цветовую гамму и динамику. Изучаем структуру вирусного видео: хук в первые 3 секунды (почему зритель должен остановиться), развитие идеи и финальный призыв к действию. Осваиваем основы визуального сторителлинга для соцсетей — как удерживать внимание до конца.</p>
+          <div class="module-tags">
+            <span class="module-tag">Видео-промпты</span>
+            <span class="module-tag">Хук</span>
+            <span class="module-tag">Сторителлинг</span>
+            <span class="module-tag">Структура ролика</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">05</div>
+          <div class="module-info">
+            <div class="module-title">Аудио, субтитры и тренды</div>
+            <div class="module-sub">Три аспекта которые определяют охват видео в 2025–2026</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Звук — половина впечатления от видео. Изучаем принципы качественного аудио и как AI убирает шум, улучшает голос и подбирает музыку автоматически. Субтитры — не просто доступность, а инструмент вовлечения: большинство смотрит видео без звука. Разбираем как стилизовать субтитры, позиционировать и делать их частью дизайна. Разбираем механику трендов: где смотреть, как адаптировать под свою нишу и не выглядеть вторично.</p>
+          <div class="module-tags">
+            <span class="module-tag">AI-аудио</span>
+            <span class="module-tag">Субтитры</span>
+            <span class="module-tag">Тренды</span>
+            <span class="module-tag">Охват и алгоритмы</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">06–07</div>
+          <div class="module-info">
+            <div class="module-title">Портфолио, поиск работы и фриланс</div>
+            <div class="module-sub">Упаковываем работы и находим первых клиентов</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Собираем портфолио из работ курса — реальные ролики под разные задачи бизнеса. Создаём сайт-портфолио с помощью ИИ на Lovable. Разбираем площадки для поиска заказов: казахстанские и международные фриланс-платформы, прямые клиенты из соцсетей. Учимся оценивать проекты, вести переговоры и работать с правками. Обсуждаем пути роста: motion design, YouTube-продакшн, работа с агентствами.</p>
+          <div class="module-tags">
+            <span class="module-tag">Портфолио</span>
+            <span class="module-tag">Фриланс-площадки</span>
+            <span class="module-tag">Ценообразование</span>
+            <span class="module-tag">Lovable · Vercel</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools-section">
+  <div class="wrap">
+    <div class="section-label">Инструменты курса</div>
+    <h2 class="section-title">С чем будем работать</h2>
+    <p style="color: var(--muted); margin-bottom: 8px;">Все инструменты имеют бесплатный план или пробный период.</p>
+    <div class="tools-grid">
+      <span class="tool-pill">Krea</span>
+      <span class="tool-pill">VEO3 (Google)</span>
+      <span class="tool-pill">HeyGen</span>
+      <span class="tool-pill">Pictory.ai</span>
+      <span class="tool-pill">CapCut</span>
+      <span class="tool-pill">Gemini</span>
+      <span class="tool-pill">Lovable</span>
+      <span class="tool-pill">Vercel</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOR WHO -->
+<div class="forwho-section">
+  <div class="wrap">
+    <div class="section-label">Для кого этот курс</div>
+    <h2 class="section-title">Подойдёт если ты...</h2>
+    <div class="forwho-grid">
+      <div class="forwho-card">
+        <div class="forwho-icon">📱</div>
+        <div class="forwho-title">Хочешь делать контент</div>
+        <div class="forwho-desc">Давно хотел вести соцсети или YouTube, но не знал с чего начать — теперь всё это делает ИИ.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">🏢</div>
+        <div class="forwho-title">У тебя есть бизнес</div>
+        <div class="forwho-desc">Хочешь сам делать рекламные ролики и контент для соцсетей — без дорогих продакшн-студий.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">🎯</div>
+        <div class="forwho-title">Работаешь в маркетинге</div>
+        <div class="forwho-desc">Добавляешь AI-видео в свой стек навыков — и становишься на порядок ценнее для работодателя.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">💰</div>
+        <div class="forwho-title">Ищешь фриланс-доход</div>
+        <div class="forwho-desc">Рекламные ролики и Reels для бизнеса — постоянно востребованные задачи с хорошим чеком.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="enroll">
+  <div class="cta-box">
+    <h2>Начни снимать видео с помощью ИИ</h2>
+    <p>7 модулей, реальные ролики в портфолио и понятный путь к первым заказам — без камеры, студии и монтажного опыта.</p>
+    <div class="cta-features">
+      <span class="cta-feat">7 модулей</span>
+      <span class="cta-feat">Портфолио роликов</span>
+      <span class="cta-feat">Доступ навсегда</span>
+      <span class="cta-feat">Поддержка в Telegram</span>
+    </div>
+    <a href="mailto:info@digital-prof.kz?subject=Запись на курс: Создатель видео на основе ИИ" class="btn-main" style="display: inline-block; font-size: 16px; padding: 16px 40px;">Записаться на курс →</a>
+    <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Или напишите нам в Telegram для уточнения стоимости</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">Цифровые<span>.</span>Профессии</a>
+    <div class="footer-links">
+      <a href="index.html">Все курсы</a>
+      <a href="course-chatbot.html">Чат-боты</a>
+      <a href="course-ai-design.html">AI Дизайн</a>
+    </div>
+    <div class="footer-copy">© 2026</div>
+  </div>
+</footer>
+
+<script>
+  function toggleModule(head) {
+    const item = head.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.module-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>

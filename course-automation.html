@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ассистент по автоматизации — Курс | Цифровые Профессии</title>
+<meta name="description" content="Автоматизируй бизнес-процессы на Make без кода. Подключай ChatGPT к любым сервисам, строй сценарии, зарабатывай на автоматизации. 7 модулей.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --amber: #f0b429; --amber-bg: rgba(240,180,41,0.12);
+    --teal: #2ec4a0;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--font-h); font-size: 16px; font-weight: 700; }
+  .nav-logo span { color: var(--amber); }
+  .nav-cta { background: var(--amber); color: #0d1117; font-size: 14px; font-weight: 600; padding: 8px 20px; border-radius: var(--r-sm); transition: opacity .2s; }
+  .nav-cta:hover { opacity: .85; }
+
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+  .hero { padding: 72px 24px 56px; max-width: 820px; margin: 0 auto; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--amber-bg); color: var(--amber); font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 100px; border: 1px solid rgba(240,180,41,0.25); margin-bottom: 24px; letter-spacing: .04em; text-transform: uppercase; }
+  .hero h1 { font-family: var(--font-h); font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; color: var(--amber); }
+  .hero-lead { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 640px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+  .pill { font-size: 13px; color: var(--muted); background: var(--card); border: 1px solid var(--border); padding: 5px 14px; border-radius: 100px; }
+  .pill strong { color: var(--text); }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-main { background: var(--amber); color: #0d1117; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: var(--r-sm); transition: opacity .2s, transform .15s; display: inline-block; }
+  .btn-main:hover { opacity: .88; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); font-size: 15px; font-weight: 500; padding: 14px 32px; border-radius: var(--r-sm); border: 1px solid var(--border-h); transition: border-color .2s; display: inline-block; }
+  .btn-outline:hover { border-color: var(--text); }
+
+  .pain-section { background: var(--surface); padding: 64px 24px; }
+  .section-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+  .section-title { font-family: var(--font-h); font-size: clamp(24px, 3.5vw, 36px); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 32px; }
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .pain-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; }
+  .pain-emoji { font-size: 24px; margin-bottom: 12px; }
+  .pain-text { font-size: 15px; color: var(--muted); line-height: 1.6; }
+  .pain-text strong { color: var(--text); }
+
+  .result-section { padding: 64px 24px; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 32px; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: var(--r); padding: 20px 24px; }
+  .result-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .result-card p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+  .modules-section { background: var(--surface); padding: 64px 24px; }
+  .modules-list { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+  .module-item { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .module-head { padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer; transition: background .15s; }
+  .module-head:hover { background: rgba(255,255,255,0.02); }
+  .module-num { font-family: var(--font-h); font-size: 13px; font-weight: 700; color: var(--amber); opacity: .7; min-width: 28px; margin-top: 2px; }
+  .module-info { flex: 1; }
+  .module-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .module-sub { font-size: 13px; color: var(--muted); }
+  .module-arrow { color: var(--muted); font-size: 18px; transition: transform .2s; flex-shrink: 0; margin-top: 2px; }
+  .module-item.open .module-arrow { transform: rotate(90deg); }
+  .module-body { display: none; padding: 0 24px 20px 68px; }
+  .module-item.open .module-body { display: block; }
+  .module-body p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+  .module-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .module-tag { font-size: 12px; background: var(--amber-bg); color: var(--amber); padding: 3px 10px; border-radius: 100px; }
+
+  .usecases-section { padding: 64px 24px; }
+  .usecases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 32px; }
+  .usecase-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; }
+  .usecase-icon { font-size: 24px; margin-bottom: 10px; }
+  .usecase-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .usecase-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .tools-section { background: var(--surface); padding: 64px 24px; }
+  .tools-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .tool-pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 8px 18px; font-size: 14px; color: var(--muted); transition: border-color .2s, color .2s; }
+  .tool-pill:hover { border-color: var(--amber); color: var(--text); }
+
+  .forwho-section { padding: 64px 24px; }
+  .forwho-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 32px; }
+  .forwho-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+  .forwho-icon { font-size: 28px; margin-bottom: 10px; }
+  .forwho-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .forwho-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .cta-section { padding: 80px 24px; text-align: center; background: var(--surface); }
+  .cta-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 56px 40px; max-width: 640px; margin: 0 auto; position: relative; overflow: hidden; }
+  .cta-box::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; background: radial-gradient(circle, rgba(240,180,41,0.1) 0%, transparent 70%); pointer-events: none; }
+  .cta-box h2 { font-family: var(--font-h); font-size: clamp(24px, 4vw, 36px); font-weight: 700; margin-bottom: 16px; }
+  .cta-box p { font-size: 16px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+  .cta-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+  .cta-feat { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .cta-feat::before { content: '✓'; color: var(--teal); font-size: 12px; }
+
+  footer { border-top: 1px solid var(--border); padding: 32px 24px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; }
+  .footer-logo span { color: var(--amber); }
+  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .footer-links a { font-size: 14px; color: var(--muted); transition: color .2s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 13px; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .pain-section, .result-section, .modules-section, .usecases-section, .tools-section, .forwho-section, .cta-section { padding: 48px 16px; }
+    .module-body { padding-left: 44px; }
+    .cta-box { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <a href="#enroll" class="nav-cta">Записаться на курс</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Курс · Автоматизация</div>
+  <h1>Автоматизируй <em>бизнес-рутину без кода</em> — и зарабатывай на этом</h1>
+  <p class="hero-lead">Make (Integromat) + ChatGPT = мощные сценарии автоматизации без единой строки кода. 7 модулей от первого сценария до реальных кейсов и первых заказов.</p>
+  <div class="hero-pills">
+    <span class="pill">⚡ <strong>Make</strong></span>
+    <span class="pill">🤖 <strong>ChatGPT</strong></span>
+    <span class="pill">📊 <strong>Google Sheets</strong></span>
+    <span class="pill">📨 <strong>Telegram · Email</strong></span>
+    <span class="pill">🔧 <strong>7 модулей</strong></span>
+    <span class="pill">💼 <strong>Реальные кейсы</strong></span>
+  </div>
+  <div class="hero-actions">
+    <a href="#enroll" class="btn-main">Записаться на курс</a>
+    <a href="#modules" class="btn-outline">Смотреть программу</a>
+  </div>
+</div>
+
+<!-- PAIN -->
+<div class="pain-section">
+  <div class="wrap">
+    <div class="section-label">Это знакомо?</div>
+    <h2 class="section-title">Почему бизнес теряет деньги на рутине</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-emoji">🔁</div>
+        <div class="pain-text"><strong>Одно и то же каждый день</strong> — копируешь данные из одной таблицы в другую, рассылаешь одинаковые письма, заносишь заявки вручную. Это можно автоматизировать раз — и забыть.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">😰</div>
+        <div class="pain-text"><strong>«Для автоматизации нужен программист»</strong> — раньше да, сейчас нет. Make позволяет соединять сервисы через визуальный интерфейс — как конструктор из блоков.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">💸</div>
+        <div class="pain-text"><strong>Бизнес платит за ручной труд</strong> — каждый час рутины стоит денег. Специалист по автоматизации экономит компании сотни часов и поэтому востребован везде.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-emoji">🤯</div>
+        <div class="pain-text"><strong>Пробовал, но запутался</strong> — Make выглядит сложно с первого взгляда. Курс выстроен от простого к сложному: с первого урока строишь рабочие сценарии.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="result-section">
+  <div class="wrap">
+    <div class="section-label">После курса</div>
+    <h2 class="section-title">Что ты умеешь и имеешь на выходе</h2>
+    <div class="result-grid">
+      <div class="result-card">
+        <h4>Строишь сценарии в Make</h4>
+        <p>Соединяешь любые сервисы — Telegram, Google Sheets, CRM, почта — без единой строки кода</p>
+      </div>
+      <div class="result-card">
+        <h4>Подключаешь ChatGPT к процессам</h4>
+        <p>ИИ генерирует тексты, классифицирует данные, отвечает на запросы — внутри автоматизации</p>
+      </div>
+      <div class="result-card">
+        <h4>Тестируешь и отлаживаешь</h4>
+        <p>Умеешь читать логи, находить ошибки и делать автоматизации надёжными</p>
+      </div>
+      <div class="result-card">
+        <h4>Портфолио реальных кейсов</h4>
+        <p>Готовые сценарии под разные ниши бизнеса — можно показывать заказчикам</p>
+      </div>
+      <div class="result-card">
+        <h4>Используешь ИИ для разработки</h4>
+        <p>ChatGPT помогает генерировать идеи сценариев и находить решения нестандартных задач</p>
+      </div>
+      <div class="result-card">
+        <h4>Готов к первым заказам</h4>
+        <p>Знаешь как оценивать проекты, где искать клиентов и как говорить на языке бизнеса</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULES -->
+<div class="modules-section" id="modules">
+  <div class="wrap">
+    <div class="section-label">Программа курса</div>
+    <h2 class="section-title">7 модулей — от первого сценария до профессионального портфолио</h2>
+    <div class="modules-list">
+
+      <div class="module-item open">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">01</div>
+          <div class="module-info">
+            <div class="module-title">Введение в профессию ассистента по автоматизации</div>
+            <div class="module-sub">Кто это, что автоматизирует и почему бизнес готов за это платить</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Разбираемся кто такой ассистент по автоматизации и какие задачи он решает: интеграции между сервисами, уведомления, сбор данных, генерация документов, рассылки. Смотрим на реальный спрос — малый и средний бизнес в Казахстане и СНГ активно ищет людей которые умеют настраивать Make. Изучаем карту навыков и строим план обучения от простых сценариев к сложным интеграциям с ИИ.</p>
+          <div class="module-tags">
+            <span class="module-tag">Что автоматизируют</span>
+            <span class="module-tag">Карта навыков</span>
+            <span class="module-tag">Рынок и спрос</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">02</div>
+          <div class="module-info">
+            <div class="module-title">Знакомство с Make — первые сценарии</div>
+            <div class="module-sub">Интерфейс, модули, триггеры, роутеры — строим первые рабочие автоматизации</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Погружаемся в Make с нуля. Изучаем интерфейс: сценарии, модули, соединения. Понимаем логику работы: триггер запускает сценарий, модули обрабатывают данные, роутеры разветвляют потоки. Создаём первые рабочие сценарии: уведомление в Telegram при новой строке в Google Sheets, автоответ на email, сохранение данных формы в таблицу. После модуля у тебя есть 2–3 живых автоматизации.</p>
+          <div class="module-tags">
+            <span class="module-tag">Интерфейс Make</span>
+            <span class="module-tag">Триггеры и модули</span>
+            <span class="module-tag">Роутеры</span>
+            <span class="module-tag">Первые сценарии</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">03</div>
+          <div class="module-info">
+            <div class="module-title">Продвинутые автоматизации</div>
+            <div class="module-sub">Фильтры, итераторы, агрегаторы — строим сложные многошаговые сценарии</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Переходим от простых к многошаговым сценариям. Учимся работать с фильтрами (условия срабатывания), итераторами (обработка массивов данных), агрегаторами (сбор данных из нескольких источников). Строим реальные сценарии: автоматическая обработка заявок с сайта, синхронизация данных между CRM и таблицами, рассылка уведомлений по расписанию. Разбираем маппинг данных и работу с переменными.</p>
+          <div class="module-tags">
+            <span class="module-tag">Фильтры</span>
+            <span class="module-tag">Итераторы</span>
+            <span class="module-tag">Агрегаторы</span>
+            <span class="module-tag">Маппинг данных</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">04</div>
+          <div class="module-info">
+            <div class="module-title">Тестирование и отладка автоматизаций</div>
+            <div class="module-sub">Как делать надёжные сценарии — и что делать когда что-то сломалось</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Автоматизация без тестирования — это бомба замедленного действия. Учимся систематически проверять сценарии перед запуском: тестовые запуски, проверка всех веток роутера. Осваиваем работу с логами выполнения в Make: как читать историю запусков, находить где именно упал сценарий и почему. Разбираем самые частые ошибки и способы их исправления. После модуля ты делаешь надёжные автоматизации, а не сырые прототипы.</p>
+          <div class="module-tags">
+            <span class="module-tag">Тестирование сценариев</span>
+            <span class="module-tag">Логи выполнения</span>
+            <span class="module-tag">Отладка ошибок</span>
+            <span class="module-tag">Портфолио-задания</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">05</div>
+          <div class="module-info">
+            <div class="module-title">Применение ИИ в автоматизации</div>
+            <div class="module-sub">Подключаем ChatGPT и Gemini — автоматизация становится умной</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Это модуль, который делает автоматизации по-настоящему мощными. Учимся подключать ChatGPT и Gemini к сценариям Make: ИИ генерирует тексты ответов, классифицирует входящие заявки, переводит и адаптирует контент, анализирует данные. Разбираем промпт-инжиниринг внутри автоматизации — как правильно ставить задачу нейросети в контексте сценария. Строим AI-powered автоматизации под реальные бизнес-задачи. Также используем ChatGPT как консультанта по автоматизации — для генерации идей и решения нестандартных задач.</p>
+          <div class="module-tags">
+            <span class="module-tag">ChatGPT в Make</span>
+            <span class="module-tag">Gemini интеграция</span>
+            <span class="module-tag">AI-powered сценарии</span>
+            <span class="module-tag">Промпты в автоматизации</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-item">
+        <div class="module-head" onclick="toggleModule(this)">
+          <div class="module-num">06–07</div>
+          <div class="module-info">
+            <div class="module-title">Портфолио + поиск работы и фриланс</div>
+            <div class="module-sub">Упаковываем кейсы и строим путь к первым заказам</div>
+          </div>
+          <div class="module-arrow">›</div>
+        </div>
+        <div class="module-body">
+          <p>Оформляем кейсы из курса в профессиональное портфолио: описание задачи, схема сценария, результат в цифрах (сколько часов экономит). Создаём сайт-портфолио на Lovable. Разбираем где искать заказы — казахстанские компании, фриланс-платформы, прямые клиенты через LinkedIn и Telegram. Учимся разговаривать с бизнесом на его языке: не «настрою сценарий в Make», а «сэкономлю вашей команде 20 часов в месяц». Обсуждаем пути роста: API-интеграции, n8n, RPA-инструменты.</p>
+          <div class="module-tags">
+            <span class="module-tag">Оформление кейсов</span>
+            <span class="module-tag">Lovable · Vercel</span>
+            <span class="module-tag">Поиск заказов</span>
+            <span class="module-tag">Язык бизнеса</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- USE CASES -->
+<div class="usecases-section">
+  <div class="wrap">
+    <div class="section-label">Примеры автоматизаций</div>
+    <h2 class="section-title">Что реально строят на Make</h2>
+    <div class="usecases-grid">
+      <div class="usecase-card">
+        <div class="usecase-icon">📋</div>
+        <div class="usecase-title">Обработка заявок с сайта</div>
+        <div class="usecase-desc">Форма → Google Sheets + уведомление в Telegram менеджеру + автоответ клиенту на email</div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🤖</div>
+        <div class="usecase-title">AI-ответы на заявки</div>
+        <div class="usecase-desc">Входящее сообщение → ChatGPT генерирует персональный ответ → отправляется клиенту автоматически</div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">📊</div>
+        <div class="usecase-title">Отчёты по расписанию</div>
+        <div class="usecase-desc">Каждый понедельник в 9:00 — сбор данных из CRM и отправка сводки руководителю в Telegram</div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🔔</div>
+        <div class="usecase-title">Уведомления о событиях</div>
+        <div class="usecase-desc">Новая оплата, новый подписчик, изменение статуса в CRM — моментальное оповещение команды</div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">📝</div>
+        <div class="usecase-title">Генерация документов</div>
+        <div class="usecase-desc">Данные из формы → ChatGPT заполняет шаблон договора → готовый PDF отправляется клиенту</div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🔄</div>
+        <div class="usecase-title">Синхронизация данных</div>
+        <div class="usecase-desc">Изменение в одной системе автоматически обновляет данные во всех связанных сервисах</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools-section">
+  <div class="wrap">
+    <div class="section-label">Инструменты курса</div>
+    <h2 class="section-title">С чем будем работать</h2>
+    <p style="color: var(--muted); margin-bottom: 8px;">Make имеет бесплатный план. Остальные инструменты также доступны бесплатно для старта.</p>
+    <div class="tools-grid">
+      <span class="tool-pill">Make (Integromat)</span>
+      <span class="tool-pill">ChatGPT API</span>
+      <span class="tool-pill">Gemini</span>
+      <span class="tool-pill">Google Sheets</span>
+      <span class="tool-pill">Telegram Bot API</span>
+      <span class="tool-pill">Gmail</span>
+      <span class="tool-pill">Airtable</span>
+      <span class="tool-pill">Lovable</span>
+      <span class="tool-pill">Vercel</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOR WHO -->
+<div class="forwho-section">
+  <div class="wrap">
+    <div class="section-label">Для кого этот курс</div>
+    <h2 class="section-title">Подойдёт если ты...</h2>
+    <div class="forwho-grid">
+      <div class="forwho-card">
+        <div class="forwho-icon">💼</div>
+        <div class="forwho-title">Работаешь в операционке или продажах</div>
+        <div class="forwho-desc">Знаешь где теряется время — теперь умеешь это автоматизировать.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">🏢</div>
+        <div class="forwho-title">У тебя есть малый бизнес</div>
+        <div class="forwho-desc">Хочешь сам настроить автоматизации для своих процессов — без дорогих разработчиков.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">🚀</div>
+        <div class="forwho-title">Хочешь войти в IT</div>
+        <div class="forwho-desc">Автоматизация — быстрый путь в tech без программирования. Спрос на Make-специалистов растёт.</div>
+      </div>
+      <div class="forwho-card">
+        <div class="forwho-icon">🌍</div>
+        <div class="forwho-title">Ищешь фриланс-доход</div>
+        <div class="forwho-desc">Один настроенный сценарий экономит бизнесу часы — и за это хорошо платят.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="enroll">
+  <div class="cta-box">
+    <h2>Начни автоматизировать бизнес-процессы</h2>
+    <p>7 модулей, реальные сценарии в портфолио и навык который нужен каждому бизнесу — без кода и технического опыта.</p>
+    <div class="cta-features">
+      <span class="cta-feat">7 модулей</span>
+      <span class="cta-feat">Реальные кейсы</span>
+      <span class="cta-feat">Доступ навсегда</span>
+      <span class="cta-feat">Поддержка в Telegram</span>
+    </div>
+    <a href="mailto:info@digital-prof.kz?subject=Запись на курс: Ассистент по автоматизации" class="btn-main" style="display: inline-block; font-size: 16px; padding: 16px 40px;">Записаться на курс →</a>
+    <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Или напишите нам в Telegram для уточнения стоимости</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">Цифровые<span>.</span>Профессии</a>
+    <div class="footer-links">
+      <a href="index.html">Все курсы</a>
+      <a href="course-chatbot.html">Чат-боты</a>
+      <a href="course-ai-design.html">AI Дизайн</a>
+      <a href="course-ai-video.html">AI Видео</a>
+      <a href="course-prompt.html">Промпт</a>
+    </div>
+    <div class="footer-copy">© 2026</div>
+  </div>
+</footer>
+
+<script>
+  function toggleModule(head) {
+    const item = head.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.module-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
