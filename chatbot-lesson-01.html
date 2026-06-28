@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 1: Введение в профессию — Создатель чат-ботов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --purple: #7c6ff7; --purple-bg: rgba(124,111,247,0.12);
+    --teal: #2ec4a0; --teal-bg: rgba(46,196,160,0.12);
+    --amber: #f0b429;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--purple); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; color: var(--text); }
+  .nav-logo span { color: var(--purple); }
+  .nav-course { font-size: 13px; color: var(--muted); }
+  .nav-back { font-size: 13px; color: var(--purple); }
+
+  /* LAYOUT */
+  .layout { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+
+  /* SIDEBAR */
+  .sidebar { position: sticky; top: 72px; }
+  .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; }
+  .module-list { list-style: none; }
+  .module-item { padding: 8px 12px; border-radius: var(--r-sm); font-size: 13px; color: var(--muted); cursor: pointer; transition: all .15s; border: 1px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .module-item:hover { color: var(--text); background: var(--card); }
+  .module-item.active { color: var(--text); background: var(--purple-bg); border-color: rgba(124,111,247,0.2); }
+  .module-item .num { font-family: var(--font-h); font-size: 11px; font-weight: 700; color: var(--purple); opacity: .6; min-width: 20px; }
+  .module-item.active .num { opacity: 1; }
+  .module-item .check { margin-left: auto; color: var(--teal); font-size: 12px; }
+
+  /* CONTENT */
+  .content { min-width: 0; }
+  .lesson-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .lesson-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; background: var(--purple-bg); color: var(--purple); padding: 3px 10px; border-radius: 100px; }
+  .lesson-num { font-size: 13px; color: var(--muted); }
+  .lesson-time { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+
+  h1 { font-family: var(--font-h); font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .lesson-intro { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+
+  /* VIDEO PLACEHOLDER */
+  .video-placeholder { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 48px 24px; text-align: center; margin-bottom: 40px; }
+  .video-icon { font-size: 48px; margin-bottom: 12px; }
+  .video-text { font-size: 15px; color: var(--muted); }
+  .video-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+  /* LESSON BODY */
+  .lesson-body h2 { font-family: var(--font-h); font-size: 22px; font-weight: 700; margin: 40px 0 16px; color: var(--text); }
+  .lesson-body h3 { font-size: 17px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  .lesson-body p { margin-bottom: 16px; color: var(--muted); }
+  .lesson-body p strong { color: var(--text); }
+  .lesson-body ul, .lesson-body ol { margin: 0 0 16px 20px; color: var(--muted); }
+  .lesson-body li { margin-bottom: 8px; line-height: 1.6; }
+  .lesson-body li strong { color: var(--text); }
+
+  /* CALLOUTS */
+  .callout { border-radius: var(--r); padding: 20px 24px; margin: 24px 0; }
+  .callout.info { background: var(--purple-bg); border-left: 3px solid var(--purple); }
+  .callout.tip { background: var(--teal-bg); border-left: 3px solid var(--teal); }
+  .callout.example { background: rgba(240,180,41,0.1); border-left: 3px solid var(--amber); }
+  .callout-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .callout.info .callout-label { color: var(--purple); }
+  .callout.tip .callout-label { color: var(--teal); }
+  .callout.example .callout-label { color: var(--amber); }
+  .callout p { margin-bottom: 0; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--card); color: var(--text); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); }
+
+  /* TASK */
+  .task-box { background: var(--card); border: 1px solid rgba(46,196,160,0.2); border-radius: 16px; padding: 28px; margin: 40px 0; }
+  .task-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .task-icon { font-size: 22px; }
+  .task-title { font-family: var(--font-h); font-size: 18px; font-weight: 700; }
+  .task-body { color: var(--muted); }
+  .task-body ol { margin-left: 20px; }
+  .task-body li { margin-bottom: 10px; line-height: 1.6; }
+  .task-body li strong { color: var(--text); }
+
+  /* NAV BUTTONS */
+  .lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); gap: 12px; }
+  .btn-nav { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: var(--r-sm); border: 1px solid var(--border-h); color: var(--text); transition: all .2s; }
+  .btn-nav:hover { border-color: var(--purple); color: var(--purple); text-decoration: none; }
+  .btn-nav.primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .btn-nav.primary:hover { opacity: .88; color: #fff; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; padding: 24px 16px; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <span class="nav-course">Создатель чат-ботов</span>
+    <a href="course-chatbot.html" class="nav-back">← К курсу</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Программа курса</div>
+    <ul class="module-list">
+      <li class="module-item active">
+        <span class="num">01</span>
+        Введение в профессию
+      </li>
+      <li class="module-item">
+        <span class="num">02</span>
+        Проектирование диалогов
+      </li>
+      <li class="module-item">
+        <span class="num">03</span>
+        Работа с конструкторами
+      </li>
+      <li class="module-item">
+        <span class="num">04</span>
+        Интеграции и промпты
+      </li>
+      <li class="module-item">
+        <span class="num">05</span>
+        Тестирование и портфолио
+      </li>
+      <li class="module-item">
+        <span class="num">06</span>
+        Портфолио-проекты
+      </li>
+      <li class="module-item">
+        <span class="num">07</span>
+        Поиск работы и фриланс
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="lesson-meta">
+      <span class="lesson-badge">Модуль 1</span>
+      <span class="lesson-num">Урок 1 из 7</span>
+      <span class="lesson-time">⏱ 15–20 минут</span>
+    </div>
+
+    <h1>Введение в профессию создателя чат-ботов</h1>
+    <p class="lesson-intro">Кто такой создатель чат-ботов, что он делает, сколько зарабатывает и что нужно знать для старта. Разбираемся в профессии прежде чем погружаться в инструменты.</p>
+
+    <!-- VIDEO PLACEHOLDER -->
+    <div class="video-placeholder">
+      <div class="video-icon">🎬</div>
+      <div class="video-text">
+        <strong>Видеоурок появится здесь</strong>
+        Пока изучайте текстовый материал ниже
+      </div>
+    </div>
+
+    <div class="lesson-body">
+
+      <h2>Кто такой создатель чат-ботов</h2>
+      <p>Создатель чат-ботов — специалист который проектирует и настраивает автоматизированные диалоговые системы для бизнеса. Боты работают в Telegram, WhatsApp, Instagram и на сайтах — отвечают на вопросы, собирают заявки, записывают клиентов и консультируют 24/7 без участия человека.</p>
+
+      <p>Главное что отличает эту профессию от разработки — <strong>не нужно уметь программировать</strong>. Современные конструкторы ботов работают как визуальные редакторы: перетащил блок, настроил текст, подключил мессенджер — бот готов.</p>
+
+      <div class="callout info">
+        <div class="callout-label">Важно понять</div>
+        <p>Создатель чат-ботов — это не программист. Это специалист по автоматизации коммуникации. Его главный инструмент — понимание того как люди общаются и что им нужно от бизнеса.</p>
+      </div>
+
+      <h2>Что делает создатель чат-ботов</h2>
+      <p>Типичные задачи специалиста:</p>
+      <ul>
+        <li><strong>Проектирует сценарии диалогов</strong> — продумывает все возможные пути разговора с клиентом</li>
+        <li><strong>Настраивает ботов в конструкторах</strong> — Manychat, Salebot, Botpress и другие платформы</li>
+        <li><strong>Подключает интеграции</strong> — связывает бота с CRM, Google Таблицами, платёжными системами</li>
+        <li><strong>Тестирует и отлаживает</strong> — проверяет все ветки диалога, исправляет ошибки</li>
+        <li><strong>Подключает ИИ</strong> — интегрирует ChatGPT или Gemini чтобы бот отвечал на сложные вопросы</li>
+      </ul>
+
+      <h2>Три типа чат-ботов</h2>
+      <p>В работе вы будете встречать три основных типа — важно понимать их отличия:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Тип</th>
+              <th>Что делает</th>
+              <th>Пример</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FAQ-бот</strong></td>
+              <td>Отвечает на частые вопросы по скриптам</td>
+              <td>«Как вас найти?», «Сколько стоит?»</td>
+            </tr>
+            <tr>
+              <td><strong>Лидогенерация</strong></td>
+              <td>Собирает контакты и заявки</td>
+              <td>Запись на услугу, заявка на консультацию</td>
+            </tr>
+            <tr>
+              <td><strong>AI-ассистент</strong></td>
+              <td>Отвечает на любые вопросы через ChatGPT</td>
+              <td>Умный консультант без ограничений по скриптам</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Где работают специалисты и сколько зарабатывают</h2>
+      <p>Создатели чат-ботов востребованы везде где бизнес общается с клиентами — а это практически любой бизнес. Основные форматы работы:</p>
+
+      <ul>
+        <li><strong>Фриланс</strong> — один проект стоит от 30 000 до 150 000 ₸ в зависимости от сложности. Простой FAQ-бот — дешевле, AI-ассистент с интеграциями — дороже.</li>
+        <li><strong>Удалённая работа</strong> — компании нанимают специалиста на постоянной основе для поддержки и развития ботов. Зарплата от 200 000 ₸.</li>
+        <li><strong>Агентство</strong> — работа в digital-агентстве где делаете ботов для клиентов агентства.</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-label">Хорошая новость</div>
+        <p>В Казахстане спрос на создателей чат-ботов значительно превышает предложение. Большинство малого и среднего бизнеса ещё не использует ботов — это значит что рынок только формируется и войти в него сейчас самое время.</p>
+      </div>
+
+      <h2>Карта навыков профессии</h2>
+      <p>Что нужно знать для успешного старта:</p>
+
+      <h3>Базовый уровень (для старта):</h3>
+      <ul>
+        <li>Проектирование диалогов и сценариев</li>
+        <li>Работа с одним-двумя конструкторами ботов</li>
+        <li>Базовый копирайтинг для ботов</li>
+        <li>Тестирование и отладка</li>
+      </ul>
+
+      <h3>Средний уровень (для роста дохода):</h3>
+      <ul>
+        <li>Интеграции с внешними сервисами</li>
+        <li>Промпт-инжиниринг для AI-ботов</li>
+        <li>Аналитика и оптимизация сценариев</li>
+        <li>Работа с несколькими платформами</li>
+      </ul>
+
+      <h3>Продвинутый уровень:</h3>
+      <ul>
+        <li>AI-боты с векторными базами знаний</li>
+        <li>Мессенджер-маркетинг и воронки продаж</li>
+        <li>Автоматизация на Make/n8n</li>
+      </ul>
+
+      <div class="callout example">
+        <div class="callout-label">Пример из практики</div>
+        <p>Салон красоты в Алматы тратил 3 часа в день на ответы в WhatsApp — «Есть ли свободные окна?», «Сколько стоит маникюр?», «Где вы находитесь?». После внедрения бота для записи — администратор освободился, количество записей выросло на 40% потому что бот отвечает мгновенно даже ночью. Стоимость такого бота — 50 000–80 000 ₸.</p>
+      </div>
+
+      <h2>Как проходить этот курс</h2>
+      <p>Несколько рекомендаций для эффективного обучения:</p>
+      <ul>
+        <li><strong>Не пропускайте практику</strong> — каждый модуль заканчивается заданием. Делайте их сразу, пока материал свежий.</li>
+        <li><strong>Создайте тестовый аккаунт</strong> — зарегистрируйтесь в Manychat или Salebot уже сейчас, чтобы на 3-м модуле сразу перейти к практике.</li>
+        <li><strong>Думайте о реальном проекте</strong> — с первого урока держите в голове какой бот вы хотите создать в конце курса.</li>
+      </ul>
+
+      <!-- TASK -->
+      <div class="task-box">
+        <div class="task-header">
+          <span class="task-icon">✏️</span>
+          <span class="task-title">Задание к уроку</span>
+        </div>
+        <div class="task-body">
+          <p style="margin-bottom: 16px; color: var(--muted);">Выполните это задание перед переходом к следующему модулю:</p>
+          <ol>
+            <li><strong>Выберите нишу</strong> — подумайте для какого типа бизнеса вы хотите создать первого бота. Это может быть ваш собственный бизнес или любой знакомый вам сегмент рынка (салон красоты, доставка еды, онлайн-школа).</li>
+            <li><strong>Запишите 5 вопросов</strong> которые клиенты этого бизнеса чаще всего задают. Это станет основой для вашего первого FAQ-бота.</li>
+            <li><strong>Зарегистрируйтесь</strong> в одном конструкторе ботов — <a href="https://manychat.com" target="_blank">Manychat</a> (для Instagram/Facebook) или <a href="https://salebot.pro" target="_blank">Salebot</a> (для Telegram/WhatsApp). Просто создайте аккаунт, не нужно ничего настраивать.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LESSON NAV -->
+    <div class="lesson-nav">
+      <a href="course-chatbot.html" class="btn-nav">← К программе курса</a>
+      <a href="chatbot-lesson-02.html" class="btn-nav primary">Следующий урок →</a>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
