@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 04: Интеграции и промпт-инжиниринг — Создатель чат-ботов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --purple: #7c6ff7; --purple-bg: rgba(124,111,247,0.12);
+    --teal: #2ec4a0; --teal-bg: rgba(46,196,160,0.12);
+    --amber: #f0b429;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--purple); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; color: var(--text); }
+  .nav-logo span { color: var(--purple); }
+  .nav-course { font-size: 13px; color: var(--muted); }
+  .nav-back { font-size: 13px; color: var(--purple); }
+  .layout { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+  .sidebar { position: sticky; top: 72px; }
+  .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; }
+  .module-list { list-style: none; }
+  .module-item { padding: 8px 12px; border-radius: var(--r-sm); font-size: 13px; color: var(--muted); border: 1px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .module-item.active { color: var(--text); background: var(--purple-bg); border-color: rgba(124,111,247,0.2); }
+  .module-item .num { font-family: var(--font-h); font-size: 11px; font-weight: 700; color: var(--purple); opacity: .6; min-width: 20px; }
+  .module-item.active .num { opacity: 1; }
+  .content { min-width: 0; }
+  .lesson-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .lesson-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; background: var(--purple-bg); color: var(--purple); padding: 3px 10px; border-radius: 100px; }
+  .lesson-num { font-size: 13px; color: var(--muted); }
+  .lesson-time { font-size: 13px; color: var(--muted); }
+  h1 { font-family: var(--font-h); font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .lesson-intro { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .video-placeholder { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 48px 24px; text-align: center; margin-bottom: 40px; }
+  .video-icon { font-size: 48px; margin-bottom: 12px; }
+  .video-text { font-size: 15px; color: var(--muted); }
+  .video-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .lesson-body h2 { font-family: var(--font-h); font-size: 22px; font-weight: 700; margin: 40px 0 16px; color: var(--text); }
+  .lesson-body h3 { font-size: 17px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  .lesson-body p { margin-bottom: 16px; color: var(--muted); }
+  .lesson-body p strong { color: var(--text); }
+  .lesson-body ul, .lesson-body ol { margin: 0 0 16px 20px; color: var(--muted); }
+  .lesson-body li { margin-bottom: 8px; line-height: 1.6; }
+  .lesson-body li strong { color: var(--text); }
+  .lesson-body code { background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--teal); }
+  .callout { border-radius: var(--r); padding: 20px 24px; margin: 24px 0; }
+  .callout.info { background: var(--purple-bg); border-left: 3px solid var(--purple); }
+  .callout.tip { background: var(--teal-bg); border-left: 3px solid var(--teal); }
+  .callout.example { background: rgba(240,180,41,0.1); border-left: 3px solid var(--amber); }
+  .callout-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .callout.info .callout-label { color: var(--purple); }
+  .callout.tip .callout-label { color: var(--teal); }
+  .callout.example .callout-label { color: var(--amber); }
+  .callout p { margin-bottom: 0; }
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--card); color: var(--text); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); }
+  .task-box { background: var(--card); border: 1px solid rgba(46,196,160,0.2); border-radius: 16px; padding: 28px; margin: 40px 0; }
+  .task-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .task-icon { font-size: 22px; }
+  .task-title { font-family: var(--font-h); font-size: 18px; font-weight: 700; }
+  .task-body { color: var(--muted); }
+  .task-body ol { margin-left: 20px; }
+  .task-body li { margin-bottom: 10px; line-height: 1.6; }
+  .task-body li strong { color: var(--text); }
+  .lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); gap: 12px; }
+  .btn-nav { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: var(--r-sm); border: 1px solid var(--border-h); color: var(--text); transition: all .2s; text-decoration: none; }
+  .btn-nav:hover { border-color: var(--purple); color: var(--purple); text-decoration: none; }
+  .btn-nav.primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .btn-nav.primary:hover { opacity: .88; color: #fff; }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; padding: 24px 16px; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <span class="nav-course">Создатель чат-ботов</span>
+    <a href="course-chatbot.html" class="nav-back">← К курсу</a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Программа курса</div>
+    <ul class="module-list">
+
+      <li class="module-item "><span class="num">01</span>Введение в профессию</li>
+      <li class="module-item "><span class="num">02</span>Проектирование диалогов</li>
+      <li class="module-item "><span class="num">03</span>Работа с конструкторами</li>
+      <li class="module-item active"><span class="num">04</span>Интеграции и промпты</li>
+      <li class="module-item "><span class="num">05</span>Тестирование и портфолио</li>
+      <li class="module-item "><span class="num">06</span>Портфолио-проекты</li>
+      <li class="module-item "><span class="num">07</span>Поиск работы и фриланс</li>
+
+    </ul>
+  </aside>
+  <main class="content">
+    <div class="lesson-meta">
+      <span class="lesson-badge">Модуль 04</span>
+      <span class="lesson-num">Урок 4 из 7</span>
+      <span class="lesson-time">⏱ 25–35 минут</span>
+    </div>
+    <h1>Интеграции и промпт-инжиниринг</h1>
+    <p class="lesson-intro">В этом уроке бот перестаёт быть простым автоответчиком. Подключаем Google Таблицы для сбора заявок и ChatGPT для умных ответов на любые вопросы.</p>
+    <div class="video-placeholder">
+      <div class="video-icon">🎬</div>
+      <div class="video-text">
+        <strong>Видеоурок появится здесь</strong>
+        Пока изучайте текстовый материал ниже
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <h2>Что такое интеграция и зачем она нужна</h2>
+      <p>Интеграция — это когда бот обменивается данными с другим сервисом. Именно за интеграции бизнес платит больше всего.</p>
+<div class="callout example"><div class="callout-label">Примеры интеграций</div><p>• Клиент оставил заявку → данные автоматически в Google Таблице<br>
+• Клиент оплатил → бот получил уведомление и открыл доступ<br>
+• Клиент написал вопрос → ChatGPT сгенерировал умный ответ<br>
+• Бот проверил наличие товара в базе → ответил есть ли нужная позиция</p></div>
+
+      <h2>Интеграция с Google Таблицами</h2>
+      <p>Самая популярная интеграция для малого бизнеса — сохранение заявок в Google Таблицу. Настраивается в Salebot через блок <strong>«Действие → HTTP-запрос»</strong>.</p>
+<p>Схема работы:</p>
+<ol>
+<li>Пользователь вводит имя → бот сохраняет в переменную <code>name</code></li>
+<li>Пользователь вводит телефон → бот сохраняет в переменную <code>phone</code></li>
+<li>Бот отправляет данные в Google Таблицу через Google Apps Script</li>
+<li>Строка с именем, телефоном и датой появляется в таблице автоматически</li>
+</ol>
+<div class="callout tip"><div class="callout-label">Инструмент</div><p>Используйте Make (integromat.com) для интеграций если не хотите разбираться с Google Apps Script. Make соединяет Salebot и Google Таблицы визуально без кода.</p></div>
+
+      <h2>Подключаем ChatGPT к боту</h2>
+      <p>Это самая мощная функция — бот с ChatGPT может ответить на любой вопрос клиента, даже тот который вы не предусмотрели в сценарии.</p>
+<p>Для подключения нужен API-ключ OpenAI (openai.com → API). В Salebot добавьте блок <strong>«HTTP-запрос»</strong> и настройте обращение к API ChatGPT.</p>
+
+      <h2>Промпт-инжиниринг для ботов</h2>
+      <p>Чтобы ChatGPT отвечал правильно — нужен грамотный промпт. Промпт — это инструкция которую вы даёте нейросети.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Плохой промпт</th><th>Хороший промпт</th></tr></thead>
+<tbody>
+<tr><td>«Ответь на вопрос пользователя»</td><td>«Ты консультант салона красоты Bella в Алматы. Отвечай только на вопросы об услугах и записи. Говори вежливо. Если вопрос не связан с салоном — вежливо откажи.»</td></tr>
+</tbody>
+</table></div>
+<p>Хороший промпт содержит:</p>
+<ul>
+<li><strong>Роль</strong> — кем является ИИ</li>
+<li><strong>Контекст</strong> — информация о бизнесе</li>
+<li><strong>Ограничения</strong> — о чём можно и нельзя говорить</li>
+<li><strong>Стиль</strong> — как именно отвечать</li>
+</ul>
+
+      <div class="task-box">
+        <div class="task-header">
+          <span class="task-icon">✏️</span>
+          <span class="task-title">Задание к уроку</span>
+        </div>
+        <div class="task-body">
+          <ol>
+<ol>
+<li><strong>Создайте Google Таблицу</strong> для сбора заявок — колонки: Имя, Телефон, Дата, Источник</li>
+<li><strong>Подключите таблицу к боту</strong> из урока 3 через Make или Google Apps Script</li>
+<li><strong>Напишите промпт</strong> для ChatGPT под вашу нишу — с ролью, контекстом и ограничениями</li>
+<li><strong>Протестируйте</strong> — отправьте заявку через бота и убедитесь что данные появились в таблице</li>
+</ol>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="lesson-nav">
+      <a href="chatbot-lesson-03.html" class="btn-nav">← Урок 3</a>
+      <a href="chatbot-lesson-05.html" class="btn-nav primary">Урок 5 →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>
