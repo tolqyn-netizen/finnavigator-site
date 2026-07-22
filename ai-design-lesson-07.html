@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 07: Фриланс и поиск первых заказов — AI Графический Дизайнер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --accent: #f07060; --accent-bg: rgba(240,112,96,0.12);
+    --teal: #2ec4a0; --teal-bg: rgba(46,196,160,0.12);
+    --amber: #f0b429;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; color: var(--text); }
+  .nav-logo span { color: var(--accent); }
+  .nav-course { font-size: 13px; color: var(--muted); }
+  .nav-back { font-size: 13px; color: var(--accent); }
+  .layout { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+  .sidebar { position: sticky; top: 72px; }
+  .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; }
+  .module-list { list-style: none; }
+  .module-item { padding: 8px 12px; border-radius: var(--r-sm); font-size: 13px; color: var(--muted); border: 1px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .module-item.active { color: var(--text); background: var(--accent-bg); border-color: rgba(240,112,96,0.2); }
+  .module-item .num { font-family: var(--font-h); font-size: 11px; font-weight: 700; color: var(--accent); opacity: .6; min-width: 20px; }
+  .module-item.active .num { opacity: 1; }
+  .content { min-width: 0; }
+  .lesson-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .lesson-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; background: var(--accent-bg); color: var(--accent); padding: 3px 10px; border-radius: 100px; }
+  .lesson-num, .lesson-time { font-size: 13px; color: var(--muted); }
+  h1 { font-family: var(--font-h); font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .lesson-intro { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .video-placeholder { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 48px 24px; text-align: center; margin-bottom: 40px; }
+  .video-icon { font-size: 48px; margin-bottom: 12px; }
+  .video-text { font-size: 15px; color: var(--muted); }
+  .video-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .lesson-body h2 { font-family: var(--font-h); font-size: 22px; font-weight: 700; margin: 40px 0 16px; color: var(--text); }
+  .lesson-body h3 { font-size: 17px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  .lesson-body p { margin-bottom: 16px; color: var(--muted); }
+  .lesson-body p strong { color: var(--text); }
+  .lesson-body ul, .lesson-body ol { margin: 0 0 16px 20px; color: var(--muted); }
+  .lesson-body li { margin-bottom: 8px; line-height: 1.6; }
+  .lesson-body li strong { color: var(--text); }
+  .callout { border-radius: var(--r); padding: 20px 24px; margin: 24px 0; }
+  .callout.info { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+  .callout.tip { background: var(--teal-bg); border-left: 3px solid var(--teal); }
+  .callout.example { background: rgba(240,180,41,0.1); border-left: 3px solid var(--amber); }
+  .callout-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .callout.info .callout-label { color: var(--accent); }
+  .callout.tip .callout-label { color: var(--teal); }
+  .callout.example .callout-label { color: var(--amber); }
+  .callout p { margin-bottom: 0; }
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--card); color: var(--text); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); }
+  .task-box { background: var(--card); border: 1px solid rgba(46,196,160,0.2); border-radius: 16px; padding: 28px; margin: 40px 0; }
+  .task-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .task-icon { font-size: 22px; }
+  .task-title { font-family: var(--font-h); font-size: 18px; font-weight: 700; }
+  .task-body { color: var(--muted); }
+  .task-body ol { margin-left: 20px; }
+  .task-body li { margin-bottom: 10px; line-height: 1.6; }
+  .task-body li strong { color: var(--text); }
+  .lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); gap: 12px; }
+  .btn-nav { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: var(--r-sm); border: 1px solid var(--border-h); color: var(--text); transition: all .2s; text-decoration: none; }
+  .btn-nav:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .btn-nav.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-nav.primary:hover { opacity: .88; color: #fff; }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; padding: 24px 16px; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <span class="nav-course">AI Графический Дизайнер</span>
+    <a href="course-ai-design.html" class="nav-back">← К курсу</a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Программа курса</div>
+    <ul class="module-list">
+      <li class="module-item "><a href="ai-design-lesson-01.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">01</span>Введение в профессию AI Графическог...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-02.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">02</span>Промпт-инжиниринг для визуализаций</a></li>
+      <li class="module-item "><a href="ai-design-lesson-03.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">03</span>Инструменты AI генерации — обзор и ...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-04.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">04</span>Основы дизайна и постобработка в Ca...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-05.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">05</span>Тренды в AI-арте и создание портфол...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-06.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">06</span>Создание профессионального портфоли...</a></li>
+      <li class="module-item active"><a href="ai-design-lesson-07.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">07</span>Фриланс и поиск первых заказов</a></li>
+    </ul>
+  </aside>
+  <main class="content">
+    <div class="lesson-meta">
+      <span class="lesson-badge">Модуль 07</span>
+      <span class="lesson-num">Урок 7 из 7</span>
+      <span class="lesson-time">⏱ 20–25 минут</span>
+    </div>
+    <h1>Фриланс и поиск первых заказов</h1>
+    <p class="lesson-intro">Финальный урок. У вас есть навык, инструменты и портфолио. Теперь разберём как превратить это в стабильный доход.</p>
+    <div class="video-placeholder">
+      <div class="video-icon">🎬</div>
+      <div class="video-text">
+        <strong>Видеоурок появится здесь</strong>
+        Пока изучайте текстовый материал ниже
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <h2>Где искать первые заказы</h2>
+      <p>Четыре канала которые работают для AI-дизайнеров в Казахстане:</p>
+<div class="callout tip"><div class="callout-label">Канал 1: Ваше окружение</div><p>Предложите 2–3 знакомым предпринимателям сделать визуал по специальной цене в обмен на отзыв. Первые кейсы — самые важные.</p></div>
+<div class="callout tip"><div class="callout-label">Канал 2: Instagram и TikTok</div><p>Показывайте процесс генерации в Reels — как из промпта получается готовая картинка. Такие видео набирают хорошие просмотры и привлекают клиентов.</p></div>
+<div class="callout tip"><div class="callout-label">Канал 3: Kwork.ru</div><p>Создайте гиг «Создам иллюстрации с помощью ИИ». Начальная цена 500–1000 рублей за 3 варианта. После первых 5 отзывов поднимайте цену.</p></div>
+<div class="callout tip"><div class="callout-label">Канал 4: Telegram-группы</div><p>Бизнес-группы вашего города. Напишите пост с примерами работ и предложением.</p></div>
+
+      <h2>Цены на казахстанском рынке</h2>
+      <p>Ориентиры для 2026 года:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Услуга</th><th>Цена</th></tr></thead>
+<tbody>
+<tr><td>1 иллюстрация для соцсетей</td><td>от 3 000 ₸</td></tr>
+<tr><td>Пакет 5 постов для Instagram</td><td>от 15 000 ₸</td></tr>
+<tr><td>Визуальный пакет бренда</td><td>от 40 000 ₸</td></tr>
+<tr><td>Ежемесячный SMM-контент (20 постов)</td><td>от 50 000 ₸</td></tr>
+</tbody>
+</table></div>
+<div class="callout info"><div class="callout-label">Стратегия роста</div><p>Начните с низких цен для первых 5 клиентов → соберите отзывы → поднимите цену в 1.5–2 раза. Повторите 3–4 раза.</p></div>
+
+      <h2>Куда расти дальше</h2>
+      <p>После первых заказов думайте о специализации:</p>
+<ul>
+<li><strong>Нишевание</strong> — стать экспертом в одной сфере (рестораны, beauty, недвижимость) — это повышает чек</li>
+<li><strong>Motion design</strong> — анимированные баннеры стоят в 2–3 раза дороже статичных</li>
+<li><strong>Brand identity</strong> — полный фирменный стиль: логотип, палитра, шрифты, паттерны</li>
+<li><strong>Своя студия</strong> — нанять ассистента, брать больше проектов</li>
+</ul>
+
+      <div class="task-box">
+        <div class="task-header">
+          <span class="task-icon">✏️</span>
+          <span class="task-title">Задание к уроку</span>
+        </div>
+        <div class="task-body">
+          <ol>
+<ol>
+<li><strong>Создайте профиль на Kwork.ru</strong> и оформите первый гиг с вашими работами</li>
+<li><strong>Напишите трём знакомым</strong> предпринимателям с предложением создать визуал</li>
+<li><strong>Снимите Reels или TikTok</strong> — покажите процесс создания изображения от промпта до финала</li>
+<li><strong>Поздравляем с завершением курса!</strong> Вы стали AI Графическим Дизайнером.</li>
+</ol>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="lesson-nav">
+      <a href="ai-design-lesson-06.html" class="btn-nav">← Урок 6</a>
+      <a href="course-ai-design.html" class="btn-nav primary">К курсу →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

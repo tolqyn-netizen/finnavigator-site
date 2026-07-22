@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 04: Основы дизайна и постобработка в Canva — AI Графический Дизайнер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --surface: #161921; --card: #1c2030;
+    --border: rgba(255,255,255,0.08); --border-h: rgba(255,255,255,0.16);
+    --text: #f0f2f7; --muted: #7c8499;
+    --accent: #f07060; --accent-bg: rgba(240,112,96,0.12);
+    --teal: #2ec4a0; --teal-bg: rgba(46,196,160,0.12);
+    --amber: #f0b429;
+    --r: 12px; --r-sm: 8px;
+    --font-h: 'Sora', sans-serif; --font-b: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav-logo { font-family: var(--font-h); font-size: 15px; font-weight: 700; color: var(--text); }
+  .nav-logo span { color: var(--accent); }
+  .nav-course { font-size: 13px; color: var(--muted); }
+  .nav-back { font-size: 13px; color: var(--accent); }
+  .layout { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+  .sidebar { position: sticky; top: 72px; }
+  .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; }
+  .module-list { list-style: none; }
+  .module-item { padding: 8px 12px; border-radius: var(--r-sm); font-size: 13px; color: var(--muted); border: 1px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .module-item.active { color: var(--text); background: var(--accent-bg); border-color: rgba(240,112,96,0.2); }
+  .module-item .num { font-family: var(--font-h); font-size: 11px; font-weight: 700; color: var(--accent); opacity: .6; min-width: 20px; }
+  .module-item.active .num { opacity: 1; }
+  .content { min-width: 0; }
+  .lesson-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .lesson-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; background: var(--accent-bg); color: var(--accent); padding: 3px 10px; border-radius: 100px; }
+  .lesson-num, .lesson-time { font-size: 13px; color: var(--muted); }
+  h1 { font-family: var(--font-h); font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .lesson-intro { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .video-placeholder { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 48px 24px; text-align: center; margin-bottom: 40px; }
+  .video-icon { font-size: 48px; margin-bottom: 12px; }
+  .video-text { font-size: 15px; color: var(--muted); }
+  .video-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .lesson-body h2 { font-family: var(--font-h); font-size: 22px; font-weight: 700; margin: 40px 0 16px; color: var(--text); }
+  .lesson-body h3 { font-size: 17px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  .lesson-body p { margin-bottom: 16px; color: var(--muted); }
+  .lesson-body p strong { color: var(--text); }
+  .lesson-body ul, .lesson-body ol { margin: 0 0 16px 20px; color: var(--muted); }
+  .lesson-body li { margin-bottom: 8px; line-height: 1.6; }
+  .lesson-body li strong { color: var(--text); }
+  .callout { border-radius: var(--r); padding: 20px 24px; margin: 24px 0; }
+  .callout.info { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+  .callout.tip { background: var(--teal-bg); border-left: 3px solid var(--teal); }
+  .callout.example { background: rgba(240,180,41,0.1); border-left: 3px solid var(--amber); }
+  .callout-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .callout.info .callout-label { color: var(--accent); }
+  .callout.tip .callout-label { color: var(--teal); }
+  .callout.example .callout-label { color: var(--amber); }
+  .callout p { margin-bottom: 0; }
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--card); color: var(--text); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); }
+  .task-box { background: var(--card); border: 1px solid rgba(46,196,160,0.2); border-radius: 16px; padding: 28px; margin: 40px 0; }
+  .task-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .task-icon { font-size: 22px; }
+  .task-title { font-family: var(--font-h); font-size: 18px; font-weight: 700; }
+  .task-body { color: var(--muted); }
+  .task-body ol { margin-left: 20px; }
+  .task-body li { margin-bottom: 10px; line-height: 1.6; }
+  .task-body li strong { color: var(--text); }
+  .lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); gap: 12px; }
+  .btn-nav { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: var(--r-sm); border: 1px solid var(--border-h); color: var(--text); transition: all .2s; text-decoration: none; }
+  .btn-nav:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .btn-nav.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-nav.primary:hover { opacity: .88; color: #fff; }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; padding: 24px 16px; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Цифровые<span>.</span>Профессии</a>
+    <span class="nav-course">AI Графический Дизайнер</span>
+    <a href="course-ai-design.html" class="nav-back">← К курсу</a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Программа курса</div>
+    <ul class="module-list">
+      <li class="module-item "><a href="ai-design-lesson-01.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">01</span>Введение в профессию AI Графическог...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-02.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">02</span>Промпт-инжиниринг для визуализаций</a></li>
+      <li class="module-item "><a href="ai-design-lesson-03.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">03</span>Инструменты AI генерации — обзор и ...</a></li>
+      <li class="module-item active"><a href="ai-design-lesson-04.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">04</span>Основы дизайна и постобработка в Ca...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-05.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">05</span>Тренды в AI-арте и создание портфол...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-06.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">06</span>Создание профессионального портфоли...</a></li>
+      <li class="module-item "><a href="ai-design-lesson-07.html" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;width:100%;"><span class="num">07</span>Фриланс и поиск первых заказов</a></li>
+    </ul>
+  </aside>
+  <main class="content">
+    <div class="lesson-meta">
+      <span class="lesson-badge">Модуль 04</span>
+      <span class="lesson-num">Урок 4 из 7</span>
+      <span class="lesson-time">⏱ 30–40 минут</span>
+    </div>
+    <h1>Основы дизайна и постобработка в Canva</h1>
+    <p class="lesson-intro">AI генерирует изображение — дизайнер превращает его в продукт. В этом уроке изучаем базовые принципы дизайна и учимся работать в Canva для постобработки.</p>
+    <div class="video-placeholder">
+      <div class="video-icon">🎬</div>
+      <div class="video-text">
+        <strong>Видеоурок появится здесь</strong>
+        Пока изучайте текстовый материал ниже
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <h2>Три базовых принципа дизайна</h2>
+      <p>Вам не нужно заканчивать дизайн-школу. Достаточно трёх принципов.</p>
+<h3>Принцип 1: Иерархия</h3>
+<p>Самое важное должно быть самым заметным. Заголовок крупнее подзаголовка, подзаголовок крупнее текста. Глаз зрителя должен сразу понимать куда смотреть.</p>
+<h3>Принцип 2: Контраст</h3>
+<p>Текст должен читаться на любом фоне. Тёмный текст на светлом фоне, светлый на тёмном. Если приходится прищуриваться чтобы прочитать — контраста недостаточно.</p>
+<h3>Принцип 3: Отступы</h3>
+<p>Воздух в дизайне — это не пустота, это пространство для дыхания. Не бойтесь оставлять пустое место. Перегруженный дизайн выглядит дешевле чем минималистичный.</p>
+
+      <h2>Работа в Canva</h2>
+      <p>Canva — ваш главный инструмент постобработки. Бесплатный план покрывает 90% задач.</p>
+<p><strong>Рабочий процесс с AI-изображением:</strong></p>
+<ol>
+<li>Скачайте сгенерированное изображение</li>
+<li>Создайте новый дизайн в Canva нужного формата</li>
+<li>Загрузите изображение как фон</li>
+<li>Добавьте текст, логотип, кнопку призыва к действию</li>
+<li>Настройте цветовую гамму в соответствии с брендом</li>
+<li>Экспортируйте в нужном формате</li>
+</ol>
+<div class="callout tip"><div class="callout-label">Лайфхак</div><p>В Canva есть функция «Удалить фон» — очень полезно когда нужно вырезать объект из сгенерированного изображения и поместить на другой фон.</p></div>
+
+      <h2>Типографика для дизайнеров без образования</h2>
+      <p>Три правила которые сделают ваш дизайн профессиональным:</p>
+<ul>
+<li><strong>Не более 2 шрифтов</strong> в одном дизайне — один для заголовков, один для текста</li>
+<li><strong>Засечки и без засечек не смешивайте</strong> в одном блоке текста</li>
+<li><strong>Межстрочный интервал 1.4–1.6</strong> для читаемости длинного текста</li>
+</ul>
+<p>Хорошие бесплатные пары шрифтов: Montserrat + Open Sans, Playfair Display + Lato, Oswald + Merriweather.</p>
+
+      <div class="task-box">
+        <div class="task-header">
+          <span class="task-icon">✏️</span>
+          <span class="task-title">Задание к уроку</span>
+        </div>
+        <div class="task-body">
+          <ol>
+<ol>
+<li><strong>Создайте пост для Instagram</strong> (1080×1080) — возьмите изображение из предыдущего урока и добавьте текст в Canva</li>
+<li><strong>Используйте только 2 шрифта</strong> и проверьте контраст текста с фоном</li>
+<li><strong>Сделайте три варианта</strong> одного и того же поста с разными цветовыми акцентами</li>
+<li><strong>Покажите другу</strong> — пусть скажет какой вариант нравится больше и почему</li>
+</ol>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="lesson-nav">
+      <a href="ai-design-lesson-03.html" class="btn-nav">← Урок 3</a>
+      <a href="ai-design-lesson-05.html" class="btn-nav primary">Урок 5 →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>
